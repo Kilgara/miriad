@@ -8,10 +8,17 @@ services:
       - MYSQL_DATABASE=miriad
     ports:
       - 3306:3306
+  discovery-service:
+    image: miriad/discovery-service:latest
+    environment:
+      - DISCOVERY_HOST=discovery-service
+    ports:
+      - 7000:7000
   api-core:
     image: miriad/core-service:latest
     depends_on:
       - mysql-server
+      - discovery-service
     environment:
       - MYSQL_HOST=mysql-server
       - DISCOVERY_HOST=discovery-service
