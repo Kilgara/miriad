@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  mysql-server:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=miriad
+    ports:
+      - 3306:3306
+  api-core:
+    image: miriad/core-service:latest
+    depends_on:
+      - mysql-server
+    environment:
+      - MYSQL_HOST=mysql-server
+      - DISCOVERY_HOST=discovery-service
+    ports:
+      - 7101-7109:7101
