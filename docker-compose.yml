@@ -24,3 +24,13 @@ services:
       - DISCOVERY_HOST=discovery-service
     ports:
       - 7101-7109:7101
+  backoffice-service:
+    image: miriad/backoffice-service:latest
+    depends_on:
+      - mysql-server
+      - discovery-service
+      - api-core
+    environment:
+      - DISCOVERY_HOST=discovery-service
+    ports:
+      - 7121-7129:7121
