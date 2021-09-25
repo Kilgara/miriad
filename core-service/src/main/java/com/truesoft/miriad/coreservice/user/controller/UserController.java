@@ -1,10 +1,14 @@
 package com.truesoft.miriad.coreservice.user.controller;
 
+import java.util.Arrays;
 import java.util.UUID;
+
+import javax.validation.constraints.Email;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.truesoft.miriad.apicore.api.dto.ErrorResponse;
@@ -30,6 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/api/users/0000")
+@Validated
 public class UserController {
 
     private final UserService userService;
@@ -44,8 +50,8 @@ public class UserController {
         return UserMapper.userDtoFrom(userService.get(uuid));
     }
 
-    @GetMapping("/findBy?email={email}")
-    public UserDto findByEmail(@PathVariable("email") String email) {
+    @GetMapping("/findBy")
+    public UserDto findByEmail(@RequestParam("email") @Email String email) {
         return UserMapper.userDtoFrom(userService.findByEmail(email));
     }
 
@@ -57,7 +63,7 @@ public class UserController {
     }
 
     @PostMapping("/{uuid}")
-    public UserDto create(@PathVariable("uuid") UUID uuid, @RequestBody UserUpdateRequest request) {
+    public UserDto update(@PathVariable("uuid") UUID uuid, @RequestBody @Validated UserUpdateRequest request) {
         final User userToUpdate = UserMapper.userFrom(request);
         final User user = userService.update(uuid, userToUpdate);
 
@@ -77,7 +83,7 @@ public class UserController {
 
         final ErrorResponse response = ErrorResponse.builder()
             .code("user.not.found")
-            .message(e.getMessage())
+            .message(Arrays.asList(e.getMessage()))
             .build();
 
         return new ResponseEntity(response, HttpStatus.NOT_FOUND);
@@ -89,7 +95,7 @@ public class UserController {
 
         final ErrorResponse response = ErrorResponse.builder()
             .code("user.exists")
-            .message(e.getMessage())
+            .message(Arrays.asList(e.getMessage()))
             .build();
 
         return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
@@ -101,7 +107,7 @@ public class UserController {
 
         final ErrorResponse response = ErrorResponse.builder()
             .code("role.not.found")
-            .message(e.getMessage())
+            .message(Arrays.asList(e.getMessage()))
             .build();
 
         return new ResponseEntity(response, HttpStatus.BAD_REQUEST);

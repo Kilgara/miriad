@@ -1,5 +1,7 @@
 package com.truesoft.miriad.apicore.api.dto;
 
+import java.util.List;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,5 +10,5 @@ import lombok.Data;
 public class ErrorResponse {
 
     private String code;
-    private String message;
+    private List<String> message;
 }
