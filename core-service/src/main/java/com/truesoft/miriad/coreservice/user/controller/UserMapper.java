@@ -3,9 +3,10 @@ package com.truesoft.miriad.coreservice.user.controller;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.truesoft.miriad.apicore.api.dto.user.UserDto;
+import com.truesoft.miriad.apicore.api.dto.user.UserRoleDto;
 import com.truesoft.miriad.apicore.api.dto.user.request.UserCreateRequest;
 import com.truesoft.miriad.apicore.api.dto.user.request.UserUpdateRequest;
-import com.truesoft.miriad.apicore.api.dto.user.response.UserDto;
 import com.truesoft.miriad.coreservice.user.domain.Role;
 import com.truesoft.miriad.coreservice.user.domain.User;
 import com.truesoft.miriad.coreservice.user.domain.UserRole;
@@ -25,6 +26,7 @@ public class UserMapper {
             .roles(user.getRoles().stream()
                 .map(Role::getName)
                 .map(UserRole::name)
+                .map(name -> Enum.valueOf(UserRoleDto.class, name))
                 .collect(Collectors.toSet()))
             .build();
     }

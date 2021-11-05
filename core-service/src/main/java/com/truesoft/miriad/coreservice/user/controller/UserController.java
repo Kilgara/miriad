@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.truesoft.miriad.apicore.api.dto.ErrorResponse;
+import com.truesoft.miriad.apicore.api.dto.user.CredentialsDto;
+import com.truesoft.miriad.apicore.api.dto.user.UserDto;
 import com.truesoft.miriad.apicore.api.dto.user.request.UserCreateRequest;
-import com.truesoft.miriad.apicore.api.dto.user.request.UserLoginRequest;
 import com.truesoft.miriad.apicore.api.dto.user.request.UserUpdateRequest;
-import com.truesoft.miriad.apicore.api.dto.user.response.UserDto;
 import com.truesoft.miriad.coreservice.user.domain.User;
 import com.truesoft.miriad.coreservice.user.exception.RoleNotFoundException;
 import com.truesoft.miriad.coreservice.user.exception.UserAlreadyExistsException;
@@ -45,16 +45,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/{uuid}")
-    public UserDto getUser(@PathVariable("uuid") UUID uuid) {
-        return UserMapper.userDtoFrom(userService.get(uuid));
-    }
-
-    @GetMapping("/findBy")
-    public UserDto findByEmail(@RequestParam("email") @Email String email) {
-        return UserMapper.userDtoFrom(userService.findByEmail(email));
-    }
-
     @PutMapping
     public UserDto create(@RequestBody UserCreateRequest request) {
         final User user = userService.create(UserMapper.userFrom(request));
@@ -70,9 +60,19 @@ public class UserController {
         return UserMapper.userDtoFrom(user);
     }
 
-    @PostMapping("/login")
-    public UserDto login(@RequestBody UserLoginRequest userLoginRequest) {
-        final User user = userService.findByEmailAndPassword(userLoginRequest.getLogin(), userLoginRequest.getPassword());
+    @GetMapping("/{uuid}")
+    public UserDto getUser(@PathVariable("uuid") UUID uuid) {
+        return UserMapper.userDtoFrom(userService.get(uuid));
+    }
+
+    @GetMapping("/findBy")
+    public UserDto findByEmail(@RequestParam("email") @Email String email) {
+        return UserMapper.userDtoFrom(userService.findByEmail(email));
+    }
+
+    @PostMapping("/findByCredentials")
+    public UserDto findByCredentials(@RequestBody CredentialsDto credentials) {
+        final User user = userService.findByEmailAndPassword(credentials.getLogin(), credentials.getPassword());
 
         return UserMapper.userDtoFrom(user);
     }

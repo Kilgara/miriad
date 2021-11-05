@@ -14,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import lombok.Data;
@@ -50,6 +51,7 @@ public class User {
     @Size(min = 6, max = 255)
     private String password;
 
+    @NotEmpty
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(	name = "users_roles",
         joinColumns = @JoinColumn(name = "user_id"),

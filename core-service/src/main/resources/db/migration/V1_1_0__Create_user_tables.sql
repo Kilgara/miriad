@@ -18,8 +18,8 @@ CREATE TABLE IF NOT EXISTS `users_roles` (
     CONSTRAINT uc_user_role UNIQUE (user_id, role_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
-INSERT INTO roles (name) VALUE ('ROLE_ADMIN');
-INSERT INTO roles (name) VALUE ('ROLE_USER');
+INSERT INTO roles (name) VALUES ('ROLE_ADMIN');
+INSERT INTO roles (name) VALUES ('ROLE_USER');
 INSERT INTO users (uuid, first_name, last_name, email, password) VALUES ('00000000-0000-0000-0000-000000000000', 'root', 'root', 'root@miriad.truesoft.com', '$2a$10$mfDYZ8xRF10J9tm.byWUBuXciCMp8DzfBmYirrLXbQcqrehjTrVBa');
-INSERT INTO users_roles (user_id, role_id) VALUE (1, 1);
-INSERT INTO users_roles (user_id, role_id) VALUE (1, 2);
+INSERT INTO users_roles (user_id, role_id) VALUES (1, 1);
+INSERT INTO users_roles (user_id, role_id) VALUES (1, 2);

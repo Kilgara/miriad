@@ -4,7 +4,9 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import com.truesoft.miriad.coreservice.user.domain.Role;
 import com.truesoft.miriad.coreservice.user.domain.User;
@@ -17,12 +19,14 @@ import com.truesoft.miriad.coreservice.user.repository.UserRepository;
 
 import static java.util.Objects.nonNull;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder encoder;
 
+    @Autowired
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
